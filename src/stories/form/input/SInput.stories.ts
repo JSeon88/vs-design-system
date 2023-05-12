@@ -45,6 +45,24 @@ export const Disabled: Story = {
   }
 };
 
+/** 기본 화면의 clear 기능 추가 화면 */
+export const Clearable: Story = {
+  render: (args) => ({
+    components: { SInput },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <SInput v-bind="args" />
+      </div>
+    `
+  }),
+  args: {
+    clearable: true
+  }
+};
+
 /** 비밀번호 타입과 icon이 노출된 화면 */
 export const Password: Story = {
   render: (args) => ({
@@ -61,6 +79,25 @@ export const Password: Story = {
   args: {
     password: true,
     showIcon: true
+  }
+};
+
+/** 비밀번호와 clear 기능 추가된 화면  */
+export const PasswordClearable: Story = {
+  render: (args) => ({
+    components: { SInput },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <SInput v-bind="args" />
+      </div>
+    `
+  }),
+  args: {
+    ...Clearable.args,
+    ...Password.args
   }
 };
 

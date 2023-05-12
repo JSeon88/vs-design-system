@@ -1,19 +1,27 @@
 <template>
-  <div>
-    <input
-      :type="inputType"
-      :disabled="disabled"
-      v-model="textValue"
-      @focusin="onFocusin"
-      @focusout="onFocusout"
-      :class="{ invalid: isErrorMsg }"
-      ref="inputRef"
-    />
-    <template v-if="showIcon">
-      <font-awesome-icon :icon="['fas', iconMode ? 'eye' : 'eye-slash']" />
-    </template>
-    <div v-show="isErrorMsg" class="error-msg">{{ errorMsg }}</div>
-    <div v-show="showCharacterLength">length : {{ characterLength }}</div>
+  <div class="s-input">
+    <div class="input-area">
+      <input
+        :type="inputType"
+        :disabled="disabled"
+        v-model="textValue"
+        @focusin="onFocusin"
+        @focusout="onFocusout"
+        :class="{ invalid: isErrorMsg }"
+        ref="inputRef"
+      />
+      <div class="clear-icon" v-show="showClearableIcon">
+        <font-awesome-icon icon="circle-xmark" @click="onClearText" />
+      </div>
+      <template v-if="showIcon">
+        <font-awesome-icon class="password-icon" :icon="['fas', iconMode ? 'eye' : 'eye-slash']" />
+      </template>
+    </div>
+
+    <div class="info-area">
+      <div v-show="isErrorMsg" class="error-msg">{{ errorMsg }}</div>
+      <div v-show="showCharacterLength" class="char-length">{{ characterLength }}</div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -48,6 +56,14 @@ export default {
       default: false
     },
     /**
+     * 값 clear
+     */
+    clearable: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    /**
      * 유효성 체크
      *
      * required : 값 필수 여부
@@ -68,6 +84,7 @@ export default {
     const inputRef = ref<HTMLInputElement | null>(null);
     const isErrorMsg = ref<boolean>(false);
     const errorMsg = ref<string>('');
+    const showClearableIcon = ref<boolean>(false);
 
     const inputType = computed<'password' | 'text'>(() => {
       return textType.value ? 'password' : 'text';
@@ -84,6 +101,9 @@ export default {
 
     const onFocusin = (): void => {
       showCharacterLength.value = true;
+      if (props.clearable) {
+        showClearableIcon.value = true;
+      }
       validate();
     };
 
@@ -124,6 +144,11 @@ export default {
       }
     };
 
+    const onClearText = () => {
+      textValue.value = '';
+      showClearableIcon.value = false;
+    };
+
     watch(textValue, () => {
       const isValidate = validate();
       if (isValidate) {
@@ -143,36 +168,58 @@ export default {
       textValue,
       onFocusin,
       onFocusout,
+      onClearText,
       isErrorMsg,
       validate,
       iconMode,
       showText,
       errorMsg,
       showCharacterLength,
+      showClearableIcon,
       characterLength
     };
   }
 };
 </script>
-<style scoped>
-input {
-  vertical-align: middle;
-  margin-right: 5px;
-}
-
-img {
-  vertical-align: middle;
-  margin-right: 5px;
-}
-
-.error-msg {
-  color: red;
-}
-
-input {
-  outline: none;
-}
-.invalid {
-  border-color: red;
+<style lang="scss" scoped>
+.s-input {
+  display: inline-block;
+  .input-area {
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    input {
+      float: left;
+      width: 200px;
+      height: 21px;
+      line-height: 19px;
+      vertical-align: middle;
+      outline: none;
+    }
+    .clear-icon {
+      float: left;
+      margin-left: 5px;
+    }
+    .password-icon {
+      float: left;
+      margin-left: 5px;
+    }
+  }
+  .info-area {
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    .error-msg {
+      float: left;
+      color: red;
+    }
+    .char-length {
+      float: right;
+    }
+  }
 }
 </style>
