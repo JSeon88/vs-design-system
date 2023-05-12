@@ -5,12 +5,7 @@ import SInput from '@/components/form/input/SInput.vue';
 const meta: Meta<typeof SInput> = {
   title: 'Design/Form/Input',
   component: SInput,
-  tags: ['autodocs'],
-  argTypes: {
-    onFocusin: {
-      action: 'Focusin Event'
-    }
-  }
+  tags: ['autodocs']
 };
 
 export default meta;
@@ -30,6 +25,24 @@ export const Default: Story = {
     `
   }),
   args: {}
+};
+
+/** 기본 화면의 비활성 화면 */
+export const Disabled: Story = {
+  render: (args) => ({
+    components: { SInput },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <SInput v-bind="args" />
+      </div>
+    `
+  }),
+  args: {
+    disabled: true
+  }
 };
 
 /** 비밀번호 타입과 icon이 노출된 화면 */

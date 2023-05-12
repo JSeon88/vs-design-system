@@ -2,6 +2,7 @@
   <div>
     <input
       :type="inputType"
+      :disabled="disabled"
       v-model="textValue"
       @focusin="onFocusin"
       @focusout="onFocusout"
@@ -39,6 +40,14 @@ export default {
       default: false
     },
     /**
+     * 비활성 여부
+     */
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    /**
      * 유효성 체크
      *
      * required : 값 필수 여부
@@ -51,11 +60,7 @@ export default {
       default: undefined
     }
   },
-  emits: [
-    /** focusin 이벤트 */
-    'focusin'
-  ],
-  setup(props, { emit }) {
+  setup(props) {
     const iconMode = ref<boolean>(false);
     const textType = ref(props.password);
     const textValue = ref<string>('');
@@ -77,10 +82,9 @@ export default {
       textType.value = !textType.value;
     };
 
-    const onFocusin = (e: FocusEvent): void => {
+    const onFocusin = (): void => {
       showCharacterLength.value = true;
       validate();
-      emit('focusin', e);
     };
 
     const onFocusout = (): void => {
