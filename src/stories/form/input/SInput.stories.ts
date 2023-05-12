@@ -16,6 +16,7 @@ const meta: Meta<typeof SInput> = {
 export default meta;
 type Story = StoryObj<typeof SInput>;
 
+/** 기본 input 화면 */
 export const Default: Story = {
   render: (args) => ({
     components: { SInput },
@@ -28,14 +29,10 @@ export const Default: Story = {
       </div>
     `
   }),
-  args: {
-    rules: {
-      required: (value: string) => !!value || 'Required',
-      min: (value: string) => value.length >= 8 || 'Min 8 characters'
-    }
-  }
+  args: {}
 };
 
+/** 비밀번호 타입과 icon이 노출된 화면 */
 export const Password: Story = {
   render: (args) => ({
     components: { SInput },
@@ -49,8 +46,29 @@ export const Password: Story = {
     `
   }),
   args: {
-    ...Default.args,
     password: true,
     showIcon: true
+  }
+};
+
+/** 유효성 체크가 추가된 화면 */
+export const Validate: Story = {
+  render: (args) => ({
+    components: { SInput },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <SInput v-bind="args" />
+      </div>
+    `
+  }),
+  args: {
+    ...Password.args,
+    rules: {
+      required: (value: string) => !!value || 'Required',
+      min: (value: string) => value.length >= 8 || 'Min 8 characters'
+    }
   }
 };
