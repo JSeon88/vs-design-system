@@ -117,21 +117,24 @@ export default {
 
     const validate = (): boolean => {
       let result: boolean = true;
-      if (props.rules) {
-        for (let rule in props.rules) {
-          if (!isRuleNames(rule)) {
-            continue;
-          }
 
-          const msg = props.rules[rule](textValue.value);
-          // 유효하지 않은 경우
-          if (typeof msg === 'string') {
-            result = false;
-            isErrorMsg.value = true;
-            errorMsg.value = msg;
-            inputFocus();
-            break;
-          }
+      if (!props.rules) {
+        return result;
+      }
+
+      for (let rule in props.rules) {
+        if (!isRuleNames(rule)) {
+          continue;
+        }
+
+        const msg = props.rules[rule](textValue.value);
+        // 유효하지 않은 경우
+        if (typeof msg === 'string') {
+          result = false;
+          isErrorMsg.value = true;
+          errorMsg.value = msg;
+          inputFocus();
+          break;
         }
       }
 
