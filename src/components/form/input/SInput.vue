@@ -111,7 +111,7 @@ export default {
       showCharacterLength.value = false;
     };
 
-    const isRuleNames = (value: unknown): value is ruleNames => {
+    const isRuleNames = (value: unknown): boolean => {
       return ['required', 'min'].includes(value as string);
     };
 
