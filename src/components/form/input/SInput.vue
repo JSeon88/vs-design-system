@@ -2,15 +2,15 @@
   <div class="s-input">
     <div class="input-area">
       <input
+        ref="inputRef"
+        v-model="textValue"
         :type="inputType"
         :disabled="disabled"
-        v-model="textValue"
+        :class="{ invalid: isErrorMsg }"
         @focusin="onFocusin"
         @focusout="onFocusout"
-        :class="{ invalid: isErrorMsg }"
-        ref="inputRef"
       />
-      <div class="clear-icon" v-show="showClearableIcon">
+      <div v-show="showClearableIcon" class="clear-icon">
         <font-awesome-icon icon="circle-xmark" @click="onClearText" />
       </div>
       <template v-if="showIcon">
