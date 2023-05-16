@@ -7,6 +7,7 @@
         :type="inputType"
         :disabled="disabled"
         :class="{ invalid: isErrorMsg }"
+        @input="onInput"
         @focusin="onFocusin"
         @focusout="onFocusout"
       />
@@ -26,8 +27,6 @@
 </template>
 <script lang="ts">
 import { computed, ref, watch } from 'vue';
-
-type ruleNames = 'required' | 'min';
 
 export default {
   props: {
@@ -76,7 +75,15 @@ export default {
       default: undefined
     }
   },
-  setup(props) {
+  emits: [
+    /** input 이벤트 */
+    'input',
+    /** focusin 이벤트 */
+    'focusin',
+    /** focusout 이벤트 */
+    'focusout'
+  ],
+  setup(props, { emit }) {
     const iconMode = ref<boolean>(false);
     const textType = ref(props.password);
     const textValue = ref<string>('');
@@ -99,16 +106,22 @@ export default {
       textType.value = !textType.value;
     };
 
-    const onFocusin = (): void => {
+    const onFocusin = (e: FocusEvent): void => {
       showCharacterLength.value = true;
       if (props.clearable) {
         showClearableIcon.value = true;
       }
       validate();
+      emit('focusin', e);
     };
 
-    const onFocusout = (): void => {
+    const onFocusout = (e: FocusEvent): void => {
       showCharacterLength.value = false;
+      emit('focusout', e);
+    };
+
+    const onInput = (e: InputEvent): void => {
+      emit('input', e);
     };
 
     const isRuleNames = (value: unknown): boolean => {
@@ -171,6 +184,7 @@ export default {
       textValue,
       onFocusin,
       onFocusout,
+      onInput,
       onClearText,
       isErrorMsg,
       validate,
