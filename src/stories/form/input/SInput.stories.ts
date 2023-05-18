@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import SInput from '@/components/form/input/SInput.vue';
 
 const meta: Meta<typeof SInput> = {
-  title: 'Design/Form/Input',
+  title: 'Design/Form/SInput',
   component: SInput,
   tags: ['autodocs']
 };
