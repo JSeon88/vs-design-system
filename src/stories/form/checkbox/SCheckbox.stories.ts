@@ -33,3 +33,27 @@ export const Default: Story = {
     label: 'check1'
   }
 };
+
+/** 비활성 화면 */
+export const Disabled: Story = {
+  render: (args) => ({
+    components: { SCheckbox },
+    data() {
+      return {
+        checked: true
+      };
+    },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <SCheckbox v-model="checked" v-bind="args" />
+      </div>
+    `
+  }),
+  args: {
+    ...Default.args,
+    disabled: true
+  }
+};

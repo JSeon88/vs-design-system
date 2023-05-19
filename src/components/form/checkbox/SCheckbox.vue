@@ -1,5 +1,5 @@
 <template>
-  <div><input v-model="value" type="checkbox" />{{ label }}</div>
+  <div><input v-model="value" type="checkbox" :disabled="disabled" />{{ label }}</div>
 </template>
 
 <script lang="ts" setup>
@@ -11,6 +11,8 @@ const props = withDefaults(
     modelValue: boolean;
     /** label */
     label: string;
+    /** 비활성 여부 */
+    disabled: boolean;
   }>(),
   {}
 );
